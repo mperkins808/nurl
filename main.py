@@ -12,14 +12,18 @@ def call_curl(curl):
 
 app = Flask(__name__)
 
-@app.route('/curl', methods=['POST'])
+@app.route('/cmd', methods=['POST'])
 def curlEndpoint():
     body = request.json
     resp = call_curl(body["cmd"])
     return resp
 
+@app.route('/healthy', methods=["GET"])
+def healthy():
+    return "200 OK"
+
 if __name__ == '__main__':
     PORT = os.getenv('PYTHON_PORT')
     if PORT == None:
         PORT = 5000
-    app.run(debug=True, port=PORT)
+    app.run(host="0.0.0.0",debug=True, port=PORT)
