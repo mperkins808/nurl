@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<head>
+    <title>NURL</title>
+
+    <style>
+        .title {
+            width: fit-content;
+            margin: auto;
+        }
+        .cmdInput {
+            width: 60%;
+            max-width: 700px;
+            height: 4rem;
+            margin: auto;
+            display: flex;
+        }
+        .cmdResp {
+            width: 60%;
+            max-width: 700%;
+            min-height: 3rem;
+            margin: auto;
+            border: solid 1px black;
+        }
+        .spacy {
+            margin-bottom: 2rem;
+        }
+
+        .submit {
+            width: 5rem;
+            font-size: larger;
+            margin: auto;
+            display: flex;
+        }
+
+    </style>
+</head>
+
+<body>
+    <h1 class="title spacy">Welcome to NURL</h1>
+    <textarea class="cmdInput spacey" id="cmd" placeholder="Enter your command"></textarea>
+    <br/> 
+    <div id="serverResponse" class="cmdResp">
+        <!-- <p id="serverResponse">Response will be output here</p> -->
+    </div>
+    <br/>
+    <button class="submit" onclick="submit()" >Submit</button>
+
+    <script type="text/javascript">
+        function submit() {
+            var xhr = new XMLHttpRequest()
+            xhr.open('POST', 'http://localhost:5000/cmd', true)
+            xhr.setRequestHeader('Content-type', 'application/json;charset=UTF-8')
+            xhr.onload = function () {
+                document.getElementById("serverResponse").innerText = this.responseText
+            }
+            // Formatting the body
+            let cmd = document.getElementById("cmd").value
+            body = `{"cmd": "${cmd}"}`
+            console.log("Running command '" + cmd + "'")
+            xhr.send(body)
+        }
+        var inputBox = document.getElementById("cmd")
+        inputBox.addEventListener("keydown", function (e) {
+            if (e.code === "Enter") {
+                submit()
+            }
+        })
+
+    </script>
+
+</body>

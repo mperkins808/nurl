@@ -4,6 +4,8 @@ WORKDIR /app
 
 COPY requirements.txt requirements.txt
 
+COPY *.html . 
+
 RUN pip3 install -r requirements.txt
 
 # PACKAGES

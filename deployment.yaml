@@ -1,0 +1,35 @@
+# Deploys the image to the cluster
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nurl-deployment
+  labels:
+    app: nurl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nurl
+  template:
+    metadata:
+      labels:
+        app: nurl
+    spec:
+      containers:
+      - name: nurl
+        image: mattyp123/nurl:0.1.0
+        ports:
+        - containerPort: 5000
+---
+# Attach a service to the cluster
+apiVersion: v1
+kind: Service
+metadata:
+  name: nurl-service
+spec:
+  selector:
+    name: nurl
+  ports:
+    - protocol: TCP
+      port: 80 # Set to 443 if your org requires HTTPS
+      targetPort: 5000
