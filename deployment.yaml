@@ -28,7 +28,7 @@ metadata:
   name: nurl-service
 spec:
   selector:
-    name: nurl
+    app: nurl
   ports:
     - protocol: TCP
       port: 80 # Set to 443 if your org requires HTTPS
